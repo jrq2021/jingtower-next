@@ -645,7 +645,10 @@ input:focus-visible {
 
 /* 当牌背内有真实图片时，隐藏 CSS 背景和 ::before 菱形 */
 .card-back:has(.tarot-card-image) {
-  background: var(--bg-deep);
+  background: transparent;
+  border: 0;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(229, 183, 104, 0.18), 0 24px 54px rgba(0, 0, 0, 0.34);
 }
 .card-back:has(.tarot-card-image)::before {
   content: none;
@@ -671,7 +674,10 @@ input:focus-visible {
 
 /* 当牌面内有真实图片时，隐藏 ::before 菱形，换纸底为透明 */
 .card-face:has(.tarot-card-image) {
-  background: var(--bg-deep);
+  background: transparent;
+  border: 0;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(229, 183, 104, 0.18), 0 24px 54px rgba(0, 0, 0, 0.34);
 }
 .card-face:has(.tarot-card-image)::before {
   content: none;
@@ -844,7 +850,11 @@ input:focus-visible {
       rotate(3deg);
   }
   45% {
-    transform: translate(205px, -34px) rotate(23deg);
+    transform: translate(
+        calc(var(--card-w, 120px) + var(--card-gap, 34px) * 2 + 18px),
+        var(--card-y, -58px)
+      )
+      rotate(8deg);
   }
   60% {
     transform: translate(
@@ -3649,10 +3659,10 @@ input:focus-visible {
 @keyframes cardBreathe {
   0%,
   100% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) translateY(0);
+    transform: translate(var(--card-tx), var(--card-ty)) rotate(var(--card-tr)) translateY(0);
   }
   50% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--tr))
+    transform: translate(var(--card-tx), var(--card-ty)) rotate(var(--card-tr))
       translateY(-6px);
   }
 }
@@ -3673,7 +3683,7 @@ input:focus-visible {
 
 @keyframes cardCollect {
   0% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(1);
+    transform: translate(var(--card-tx), var(--card-ty)) rotate(var(--card-tr)) scale(1);
     opacity: 1;
   }
   100% {
@@ -3708,7 +3718,7 @@ input:focus-visible {
     transform: translate(0, 0) rotate(0deg) scale(0.88);
   }
   100% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(1);
+    transform: translate(var(--card-tx), var(--card-ty)) rotate(var(--card-tr)) scale(1);
   }
 }
 
