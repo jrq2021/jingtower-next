@@ -7,6 +7,7 @@ import { getAnonymousId } from "@/lib/anonymous";
 import { trackEvent } from "@/lib/analytics/client";
 import { MathCurveLoader } from "@/components/MathCurveLoader";
 import { TarotCardImage } from "@/components/TarotCardImage";
+import { AnimatedTarotCard } from "@/components/AnimatedTarotCard";
 import type { Reading, SceneKey, TarotCard } from "@/lib/types";
 
 /* ─── constants ─── */
@@ -22,8 +23,6 @@ type HistoryItem = {
 };
 
 const GUIDES = ["清醒分析", "温柔陪伴", "关系复盘", "职业决策"] as const;
-
-const DEFAULT_QUESTION = "我和他最近忽冷忽热，我该主动沟通吗？";
 
 /* ─── 首页状态持久化 key ─── */
 const HOME_READING_KEY = "jingtower:last-home-reading";
@@ -102,7 +101,7 @@ function writeHistory(items: HistoryItem[]) {
 export function TarotRoom() {
   /* 输入状态 */
   const [activeScene, setActiveScene] = useState<SceneKey>("love");
-  const [question, setQuestion] = useState(DEFAULT_QUESTION);
+  const [question, setQuestion] = useState("");
   const [guide, setGuide] = useState<string>(GUIDES[0]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
 
@@ -136,9 +135,12 @@ export function TarotRoom() {
   const rewrittenQuestion = useMemo(() => {
     if (readingData?.rewrittenQuestion) return readingData.rewrittenQuestion;
     const q = question.trim();
+    if (!q) return "";
     if (q.length <= 3) return scene.rewrite;
     return `我想复盘「${q}」背后的真实需求、阻力和下一步低风险行动。`;
   }, [question, scene.rewrite, readingData]);
+
+  const hasQuestion = question.trim().length > 0;
 
   /* 显示的牌：API 返回优先，否则用场景默认 */
   const displayCards: TarotCard[] = readingData?.cards ?? scene.cards;
@@ -219,6 +221,13 @@ export function TarotRoom() {
   /* ─── 核心流程：调 API → 写历史 → 启动画 ─── */
 
   const drawCards = useCallback(async () => {
+    const q = question.trim();
+    if (!q) {
+      setErrorMessage("请先写下你想探索的问题");
+      setApiStatus("error");
+      return;
+    }
+
     // 取消上一次未完成的请求
     abortRef.current?.abort();
     const controller = new AbortController();
@@ -235,8 +244,6 @@ export function TarotRoom() {
     setSafetyMessage("");
     setErrorMessage("");
     setApiStatus("loading");
-
-    const q = question.trim() || scene.rewrite;
 
     // 埋点：开始解读
     trackEvent("start_reading", {
@@ -504,7 +511,10 @@ export function TarotRoom() {
                 onClick={() => switchScene(item.key)}
                 type="button"
               >
-                {item.label}
+                <span className="scene-tab-label">{item.label}</span>
+                <span className="scene-tab-sub">
+                  {item.subtitle ?? item.title}
+                </span>
               </button>
             ))}
           </div>
@@ -539,7 +549,13 @@ export function TarotRoom() {
 
           <div className="rewrite-card" aria-live="polite">
             <span>AI 改写 · {guide}</span>
-            <p>{rewrittenQuestion}</p>
+            {hasQuestion ? (
+              <p>{rewrittenQuestion}</p>
+            ) : (
+              <p className="rewrite-hint">
+                写下你的问题后，AI 会帮你改写成更适合塔罗探索的提问方式。
+              </p>
+            )}
           </div>
 
           <div className="room-actions">
@@ -582,6 +598,14 @@ export function TarotRoom() {
 
           <div
             className={`card-stage${phase === "idle" ? " is-idle" : ""}${isDrawn ? " is-drawn" : ""}${phase === "collecting" ? " is-collecting" : ""}${phase === "shuffling" ? " is-shuffling" : ""}${phase === "revealed" ? " is-revealed" : ""}`}
+            style={
+              {
+                "--card-w": "120px",
+                "--card-h": "192px",
+                "--card-y": "-58px",
+                "--card-gap": "34px",
+              } as React.CSSProperties
+            }
           >
             <div className="stage-rings" aria-hidden="true" />
 
@@ -611,19 +635,29 @@ export function TarotRoom() {
                     transitionDelay: flipped ? `${index * 0.15}s` : "0s",
                   }}
                 >
-                  <div className="card-inner">
-                    <div className="card-back">
-                      <TarotCardImage card={card} revealed={false} size="sm" />
+                  <AnimatedTarotCard
+                    active={flipped}
+                    rarity="gold"
+                    intensity="medium"
+                  >
+                    <div className="card-inner">
+                      <div className="card-back">
+                        <TarotCardImage
+                          card={card}
+                          revealed={false}
+                          size="sm"
+                        />
+                      </div>
+                      <div className="card-face">
+                        <TarotCardImage
+                          card={card}
+                          revealed={true}
+                          size="sm"
+                          overlayLabel={true}
+                        />
+                      </div>
                     </div>
-                    <div className="card-face">
-                      <TarotCardImage
-                        card={card}
-                        revealed={true}
-                        size="sm"
-                        overlayLabel={true}
-                      />
-                    </div>
-                  </div>
+                  </AnimatedTarotCard>
                 </article>
               );
             })}
@@ -640,30 +674,36 @@ export function TarotRoom() {
               onClick={handleLockedCardClick}
               type="button"
             >
-              <div className="card-inner">
-                <div className="card-back">
-                  <TarotCardImage
-                    card={{
-                      name: "澄清牌",
-                      role: "第四张",
-                      keyword: "盲区提醒",
-                      image: "",
-                      backImage: "/tarot/deck-v1/backs/default.webp",
-                      alt: "澄清牌背面",
-                    }}
-                    revealed={false}
-                    locked={true}
-                    lockedLabel={
-                      checkReadingUnlocked()
-                        ? "查看澄清牌"
-                        : readingData
-                          ? "解锁澄清牌"
-                          : "先抽三张牌"
-                    }
-                    size="sm"
-                  />
+              <AnimatedTarotCard
+                active={!!readingData}
+                rarity="locked"
+                intensity={readingData ? "strong" : "medium"}
+              >
+                <div className="card-inner">
+                  <div className="card-back">
+                    <TarotCardImage
+                      card={{
+                        name: "澄清牌",
+                        role: "第四张",
+                        keyword: "盲区提醒",
+                        image: "",
+                        backImage: "/tarot/deck-v1/backs/default.webp",
+                        alt: "澄清牌背面",
+                      }}
+                      revealed={false}
+                      locked={true}
+                      lockedLabel={
+                        checkReadingUnlocked()
+                          ? "查看澄清牌"
+                          : readingData
+                            ? "解锁澄清牌"
+                            : "先抽三张牌"
+                      }
+                      size="sm"
+                    />
+                  </div>
                 </div>
-              </div>
+              </AnimatedTarotCard>
             </button>
           </div>
 
@@ -709,9 +749,31 @@ export function TarotRoom() {
               <div className="insight-body">
                 <span className="mini-label">免费洞察已生成</span>
                 <h2>{readingData.freeResult.summary}</h2>
-                <p className="insight-summary">
-                  {readingData.freeResult.insight}
-                </p>
+
+                {readingData.freeResult.currentState && (
+                  <div className="insight-block">
+                    <span className="insight-block-label">当前处境</span>
+                    <p className="insight-summary">
+                      {readingData.freeResult.currentState}
+                    </p>
+                  </div>
+                )}
+
+                {readingData.freeResult.cardSynthesis && (
+                  <div className="insight-block">
+                    <span className="insight-block-label">三牌合解</span>
+                    <p className="insight-summary">
+                      {readingData.freeResult.cardSynthesis}
+                    </p>
+                  </div>
+                )}
+
+                {!readingData.freeResult.currentState &&
+                  !readingData.freeResult.cardSynthesis && (
+                    <p className="insight-summary">
+                      {readingData.freeResult.insight}
+                    </p>
+                  )}
 
                 <div className="insight-cards">
                   {readingData.cards.map((card, i) => (
@@ -731,6 +793,13 @@ export function TarotRoom() {
                   <span className="mini-label">今日行动</span>
                   <p>{readingData.freeResult.action}</p>
                 </div>
+
+                {readingData.freeResult.risk && (
+                  <div className="insight-risk">
+                    <span className="mini-label">留意风险</span>
+                    <p>{readingData.freeResult.risk}</p>
+                  </div>
+                )}
 
                 <div className="insight-teaser">
                   <span>{readingData.freeResult.paywallTeaser}</span>

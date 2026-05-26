@@ -169,9 +169,13 @@ export async function generateFreeReading(
       })),
       freeResult: {
         summary: ai.freeResult?.summary ?? "",
+        currentState:
+          ai.freeResult?.currentState ?? ai.freeResult?.coreReminder ?? "",
+        cardSynthesis: ai.freeResult?.cardSynthesis ?? "",
         insight:
           ai.freeResult?.coreReminder ?? ai.freeResult?.currentState ?? "",
         action: ai.freeResult?.action ?? "",
+        risk: ai.freeResult?.risk ?? "",
         paywallTeaser: ai.freeResult?.paywallTeaser ?? "",
       },
       paymentStatus: "free",
@@ -180,8 +184,9 @@ export async function generateFreeReading(
     };
 
     return { reading, source: "ai" };
-  } catch {
-    // 任何错误都 fallback
+  } catch (err) {
+    // 任何错误都 fallback，但在开发环境打印真实错误
+    console.error("[AI] Free reading generation failed:", err);
     const reading = createMockReading(scene, question);
     reading.source = "fallback";
     return { reading, source: "fallback" };

@@ -255,7 +255,7 @@ input:focus-visible {
 
 /* 当前页面选中样式 */
 .nav-links a.nav-active {
-  color: #F2C56B;
+  color: #f2c56b;
   position: relative;
 }
 
@@ -268,7 +268,7 @@ input:focus-visible {
   width: 60%;
   height: 2px;
   border-radius: 1px;
-  background: #F2C56B;
+  background: #f2c56b;
 }
 
 .header-cta,
@@ -396,7 +396,7 @@ input:focus-visible {
 
 .scene-tab,
 .guide-chip {
-  min-height: 42px;
+  min-height: 56px;
   border: 1px solid rgba(216, 170, 93, 0.24);
   border-radius: var(--radius);
   background: rgba(255, 246, 228, 0.06);
@@ -409,6 +409,30 @@ input:focus-visible {
     color 180ms ease,
     transform 180ms ease,
     border-color 180ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 8px;
+}
+
+.scene-tab-label {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.scene-tab-sub {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-on-dark-soft);
+  line-height: 1.3;
+  text-align: center;
+}
+
+.scene-tab.active .scene-tab-sub {
+  color: rgba(19, 15, 24, 0.7);
 }
 
 .scene-tab:hover,
@@ -481,6 +505,12 @@ input:focus-visible {
   line-height: 1.6;
 }
 
+.rewrite-hint {
+  color: var(--text-on-dark-soft) !important;
+  font-style: italic;
+  font-size: 14px;
+}
+
 .room-actions {
   display: flex;
   flex-wrap: wrap;
@@ -501,19 +531,6 @@ input:focus-visible {
   opacity: 0.7;
   cursor: not-allowed;
   pointer-events: none;
-}
-
-.draw-button.is-busy::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.12),
-    transparent
-  );
-  animation: btnShimmer 1.2s ease infinite;
 }
 
 .safety-hint {
@@ -668,20 +685,29 @@ input:focus-visible {
 }
 
 .card-one {
-  transform: translate(-198px, -68px) rotate(-13deg);
+  transform: translate(
+      calc(-1 * var(--card-w, 120px) - var(--card-gap, 34px) - 12px),
+      var(--card-y, -58px)
+    )
+    rotate(-8deg);
 }
 
 .card-two {
-  transform: translate(-66px, -96px) rotate(0deg);
+  transform: translate(-50%, var(--card-y, -58px)) rotate(0deg);
 }
 
 .card-three {
-  transform: translate(66px, -68px) rotate(13deg);
+  transform: translate(calc(var(--card-gap, 34px) + 12px), var(--card-y, -58px))
+    rotate(8deg);
 }
 
 .card-locked {
-  transform: translate(205px, -34px) rotate(21deg);
-  filter: brightness(0.7) saturate(0.72);
+  transform: translate(
+      calc(var(--card-w, 120px) + var(--card-gap, 34px) * 2 + 18px),
+      var(--card-y, -58px)
+    )
+    rotate(6deg);
+  filter: brightness(0.65) saturate(0.7);
   cursor: pointer;
   border: 0;
   background: transparent;
@@ -771,8 +797,12 @@ input:focus-visible {
 
 /* hover */
 .card-locked:hover {
-  filter: brightness(0.88) saturate(0.84);
-  transform: translate(205px, -38px) rotate(21deg);
+  filter: brightness(0.78) saturate(0.78);
+  transform: translate(
+      calc(var(--card-w, 120px) + var(--card-gap, 34px) * 2 + 18px),
+      calc(var(--card-y, -58px) - 6px)
+    )
+    rotate(6deg);
   box-shadow: 0 0 24px rgba(229, 183, 104, 0.3);
 }
 
@@ -785,7 +815,7 @@ input:focus-visible {
 .card-locked:focus-visible {
   outline: 3px solid rgba(245, 213, 138, 0.8);
   outline-offset: 4px;
-  filter: brightness(0.9) saturate(0.86);
+  filter: brightness(0.8) saturate(0.8);
   box-shadow: 0 0 20px rgba(229, 183, 104, 0.35);
 }
 
@@ -793,22 +823,42 @@ input:focus-visible {
 @keyframes lockShake {
   0%,
   100% {
-    transform: translate(205px, -34px) rotate(21deg);
+    transform: translate(
+        calc(var(--card-w, 120px) + var(--card-gap, 34px) * 2 + 18px),
+        var(--card-y, -58px)
+      )
+      rotate(6deg);
   }
   15% {
-    transform: translate(205px, -34px) rotate(24deg);
+    transform: translate(
+        calc(var(--card-w, 120px) + var(--card-gap, 34px) * 2 + 18px),
+        var(--card-y, -58px)
+      )
+      rotate(9deg);
   }
   30% {
-    transform: translate(205px, -34px) rotate(18deg);
+    transform: translate(
+        calc(var(--card-w, 120px) + var(--card-gap, 34px) * 2 + 18px),
+        var(--card-y, -58px)
+      )
+      rotate(3deg);
   }
   45% {
     transform: translate(205px, -34px) rotate(23deg);
   }
   60% {
-    transform: translate(205px, -34px) rotate(19deg);
+    transform: translate(
+        calc(var(--card-w, 120px) + var(--card-gap, 34px) * 2 + 18px),
+        var(--card-y, -58px)
+      )
+      rotate(4deg);
   }
   75% {
-    transform: translate(205px, -34px) rotate(22deg);
+    transform: translate(
+        calc(var(--card-w, 120px) + var(--card-gap, 34px) * 2 + 18px),
+        var(--card-y, -58px)
+      )
+      rotate(7deg);
   }
 }
 
@@ -865,15 +915,20 @@ input:focus-visible {
 
 /* 翻牌后卡片扇开定位 */
 .card-stage.is-revealed .card-one.flipped {
-  transform: translate(-216px, -20px) rotate(-12deg);
+  transform: translate(
+      calc(-1 * var(--card-w, 120px) - var(--card-gap, 34px) - 12px),
+      var(--card-y, -58px)
+    )
+    rotate(-6deg);
 }
 
 .card-stage.is-revealed .card-two.flipped {
-  transform: translate(-66px, -68px) rotate(0deg);
+  transform: translate(-50%, calc(var(--card-y, -58px) - 12px)) rotate(0deg);
 }
 
 .card-stage.is-revealed .card-three.flipped {
-  transform: translate(84px, -20px) rotate(12deg);
+  transform: translate(calc(var(--card-gap, 34px) + 12px), var(--card-y, -58px))
+    rotate(6deg);
 }
 
 /* 关键词标签 */
@@ -1178,6 +1233,39 @@ input:focus-visible {
   margin: 10px 0 0;
   color: var(--muted);
   line-height: 1.7;
+  font-size: 14px;
+}
+
+/* 洞察内容块 */
+.insight-block {
+  margin-top: 14px;
+  border: 1px solid rgba(229, 183, 104, 0.14);
+  border-radius: 6px;
+  padding: 12px 14px;
+  background: rgba(229, 183, 104, 0.04);
+}
+
+.insight-block-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 4px;
+  letter-spacing: 0.03em;
+}
+
+/* 风险提示块 */
+.insight-risk {
+  margin-top: 14px;
+  border-left: 3px solid rgba(212, 149, 107, 0.6);
+  padding: 4px 0 4px 14px;
+}
+
+.insight-risk p {
+  margin: 6px 0 0;
+  color: var(--text-on-dark-muted);
+  line-height: 1.65;
+  font-size: 14px;
 }
 
 /* 三张牌迷你摘要 */
@@ -1649,7 +1737,7 @@ input:focus-visible {
 }
 
 .sitemap-section h2 {
-  color: #F6D58B;
+  color: #f6d58b;
   position: relative;
   z-index: 1;
 }
@@ -1663,7 +1751,7 @@ input:focus-visible {
 
 .sitemap-grid h3 {
   margin: 0 0 14px;
-  color: #F2C56B;
+  color: #f2c56b;
   position: relative;
   z-index: 1;
 }
@@ -1671,14 +1759,14 @@ input:focus-visible {
 .sitemap-grid a {
   display: block;
   margin-top: 10px;
-  color: #BFB6CC;
+  color: #bfb6cc;
   transition: color 180ms ease;
   position: relative;
   z-index: 1;
 }
 
 .sitemap-grid a:hover {
-  color: #F2C56B;
+  color: #f2c56b;
 }
 
 .page-main {
@@ -1715,13 +1803,13 @@ input:focus-visible {
 
 .plan-card h2 {
   margin: 10px 0 0;
-  color: #FFF7E6;
+  color: #fff7e6;
   font-size: 28px;
   font-weight: 700;
 }
 
 .plan-card .mini-label {
-  color: #F2C56B;
+  color: #f2c56b;
 }
 
 .free-plan ul {
@@ -1733,7 +1821,7 @@ input:focus-visible {
 }
 
 .free-plan li {
-  color: #BFB6CC;
+  color: #bfb6cc;
 }
 
 .free-plan li::before {
@@ -1758,7 +1846,7 @@ input:focus-visible {
 }
 
 .paid-plan h2 {
-  color: #F6D58B;
+  color: #f6d58b;
 }
 
 .paid-plan::before {
@@ -1768,7 +1856,7 @@ input:focus-visible {
   right: 24px;
   padding: 3px 14px;
   border-radius: 4px;
-  background: linear-gradient(135deg, #F2C56B, #e0a84c);
+  background: linear-gradient(135deg, #f2c56b, #e0a84c);
   color: #130f18;
   font-size: 11px;
   font-weight: 700;
@@ -1778,7 +1866,7 @@ input:focus-visible {
 .paid-plan p,
 .paid-plan small,
 .plan-card p {
-  color: #BFB6CC;
+  color: #bfb6cc;
   line-height: 1.7;
 }
 
@@ -1799,12 +1887,12 @@ input:focus-visible {
 }
 
 .paid-feature strong {
-  color: #F2C56B;
+  color: #f2c56b;
   font-size: 15px;
 }
 
 .paid-feature span {
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 13px;
   line-height: 1.55;
 }
@@ -2656,20 +2744,20 @@ input:focus-visible {
 
 .rp-lock-icon {
   font-size: 24px;
-  color: #F2C56B;
+  color: #f2c56b;
   opacity: 0.7;
 }
 
 .rp-paywall-header h2 {
   margin: 6px 0 0;
-  color: #FFF7E6;
+  color: #fff7e6;
   font-size: 22px;
   font-weight: 700;
 }
 
 .rp-paywall-header p {
   margin: 4px 0 0;
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 13px;
 }
 
@@ -2704,7 +2792,7 @@ input:focus-visible {
 
 .rp-locked-item strong {
   display: block;
-  color: #FFF7E6;
+  color: #fff7e6;
   font-size: 14px;
   font-weight: 700;
   line-height: 1.3;
@@ -2713,7 +2801,7 @@ input:focus-visible {
 .rp-locked-item span {
   display: block;
   margin-top: 2px;
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 11px;
   line-height: 1.45;
 }
@@ -2726,7 +2814,7 @@ input:focus-visible {
   padding: 3px 8px;
   border: 1px solid rgba(242, 197, 107, 0.2);
   border-radius: 4px;
-  color: #F2C56B;
+  color: #f2c56b;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -2752,7 +2840,7 @@ input:focus-visible {
 
 .rp-cta h2 {
   margin: 0 0 14px;
-  color: #FFF7E6;
+  color: #fff7e6;
   font-size: 20px;
   font-weight: 700;
 }
@@ -2776,18 +2864,18 @@ input:focus-visible {
 }
 
 .rp-price-card strong {
-  color: #FFF7E6;
+  color: #fff7e6;
   font-size: 28px;
   font-weight: 700;
 }
 
 .rp-price-card span {
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 12px;
 }
 
 .rp-price-tag {
-  color: #F2C56B !important;
+  color: #f2c56b !important;
   font-weight: 700;
   font-size: 13px !important;
 }
@@ -2809,7 +2897,7 @@ input:focus-visible {
   top: -11px;
   padding: 2px 12px;
   border-radius: 4px;
-  background: linear-gradient(135deg, #F2C56B, #e0a84c);
+  background: linear-gradient(135deg, #f2c56b, #e0a84c);
   color: #130f18;
   font-size: 11px;
   font-weight: 700;
@@ -2825,7 +2913,7 @@ input:focus-visible {
 
 .rp-cta-note {
   margin-top: 12px;
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 11px;
 }
 
@@ -2974,23 +3062,25 @@ input:focus-visible {
   place-items: center;
   border-radius: 50%;
   background: rgba(255, 246, 228, 0.08);
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 20px;
   cursor: pointer;
   border: 1px solid rgba(242, 197, 107, 0.2);
   line-height: 1;
-  transition: background 180ms ease, color 180ms ease;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
 }
 
 .share-close:hover {
   background: rgba(255, 246, 228, 0.16);
-  color: #FFF7E6;
+  color: #fff7e6;
   border-color: rgba(242, 197, 107, 0.4);
 }
 
 .share-modal h3 {
   margin: 0 0 16px;
-  color: #FFF7E6;
+  color: #fff7e6;
   font-size: 18px;
   text-align: center;
   flex-shrink: 0;
@@ -2998,7 +3088,7 @@ input:focus-visible {
 
 .share-status-text {
   text-align: center;
-  color: #BFB6CC;
+  color: #bfb6cc;
   padding: 30px 0;
 }
 
@@ -3110,7 +3200,7 @@ input:focus-visible {
 
 .share-download-msg {
   margin: 10px 0 0;
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 12px;
 }
 
@@ -3395,7 +3485,7 @@ input:focus-visible {
   border: none;
   border-radius: 4px;
   padding: 3px 14px;
-  background: linear-gradient(135deg, #F2C56B, #e0a84c);
+  background: linear-gradient(135deg, #f2c56b, #e0a84c);
   color: #130f18;
   font-size: 11px;
   font-weight: 700;
@@ -3403,19 +3493,19 @@ input:focus-visible {
 }
 
 .price-tag {
-  color: #F2C56B;
+  color: #f2c56b;
   font-size: 13px;
   font-weight: 600;
 }
 
 .price-num {
-  color: #FFF7E6;
+  color: #fff7e6;
   font-size: 36px;
   font-weight: 700;
 }
 
 .price-desc {
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 13px;
 }
 
@@ -3458,7 +3548,7 @@ input:focus-visible {
 }
 
 .pay-mock-hint {
-  color: #BFB6CC;
+  color: #bfb6cc;
   font-size: 13px;
   background: rgba(18, 14, 26, 0.8);
   padding: 4px 12px;
@@ -3668,25 +3758,22 @@ input:focus-visible {
 /* 空闲呼吸 */
 .card-stage.is-idle .tarot-card:not(.card-locked) {
   animation: cardBreathe 3s ease-in-out infinite;
-  --tx: var(--card-tx, 0px);
-  --ty: var(--card-ty, 0px);
-  --tr: var(--card-tr, 0deg);
 }
 
 .card-one {
-  --card-tx: -198px;
-  --card-ty: -68px;
-  --card-tr: -13deg;
+  --card-tx: calc(-1 * var(--card-w, 120px) - var(--card-gap, 34px) - 12px);
+  --card-ty: var(--card-y, -58px);
+  --card-tr: -8deg;
 }
 .card-two {
-  --card-tx: -66px;
-  --card-ty: -96px;
+  --card-tx: -50%;
+  --card-ty: var(--card-y, -58px);
   --card-tr: 0deg;
 }
 .card-three {
-  --card-tx: 66px;
-  --card-ty: -68px;
-  --card-tr: 13deg;
+  --card-tx: calc(var(--card-gap, 34px) + 12px);
+  --card-ty: var(--card-y, -58px);
+  --card-tr: 8deg;
 }
 
 /* 锁定牌光晕 */
@@ -3873,6 +3960,248 @@ input:focus-visible {
 
 .pay-unlocked {
   animation: fadeInScale 0.4s ease both;
+}
+
+/* ═══════════════════════════════════════════
+   AnimatedTarotCard · 全息金卡动效
+   ═══════════════════════════════════════════ */
+
+.atc-container {
+  position: relative;
+  perspective: 900px;
+  cursor: default;
+  width: 100%;
+  height: 100%;
+}
+.atc-active {
+  cursor: pointer;
+}
+
+.atc-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  border-radius: inherit;
+  will-change: transform;
+}
+
+.atc-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+/* ── 边缘 glow ── */
+.atc-glow {
+  position: absolute;
+  inset: -3px;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.atc-rarity-normal .atc-glow {
+  box-shadow:
+    0 0 8px rgba(229, 183, 104, 0.2),
+    0 0 0 1px rgba(229, 183, 104, 0.15);
+}
+.atc-rarity-gold .atc-glow,
+.atc-rarity-revealed .atc-glow {
+  box-shadow:
+    0 0 14px rgba(242, 197, 107, 0.35),
+    0 0 28px rgba(229, 183, 104, 0.18),
+    0 0 0 2px rgba(242, 197, 107, 0.25);
+}
+.atc-rarity-locked .atc-glow {
+  box-shadow:
+    0 0 10px rgba(156, 90, 123, 0.3),
+    0 0 20px rgba(124, 63, 104, 0.15),
+    0 0 0 1px rgba(156, 90, 123, 0.2);
+}
+.atc-active.atc-hovered .atc-glow {
+  opacity: 1;
+}
+.atc-rarity-gold.atc-hovered .atc-glow,
+.atc-rarity-revealed.atc-hovered .atc-glow {
+  animation: atcGoldPulse 2.2s ease-in-out infinite;
+}
+.atc-rarity-locked.atc-hovered .atc-glow {
+  animation: atcLockedPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes atcGoldPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 14px rgba(242, 197, 107, 0.35),
+      0 0 28px rgba(229, 183, 104, 0.18),
+      0 0 0 2px rgba(242, 197, 107, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 22px rgba(242, 197, 107, 0.55),
+      0 0 42px rgba(229, 183, 104, 0.28),
+      0 0 0 3px rgba(242, 197, 107, 0.4);
+  }
+}
+@keyframes atcLockedPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px rgba(156, 90, 123, 0.3),
+      0 0 20px rgba(124, 63, 104, 0.15),
+      0 0 0 1px rgba(156, 90, 123, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba(156, 90, 123, 0.5),
+      0 0 32px rgba(124, 63, 104, 0.25),
+      0 0 0 2px rgba(156, 90, 123, 0.35);
+  }
+}
+
+/* ── Holo shimmer 扫光 ── */
+.atc-shimmer {
+  position: absolute;
+  inset: 2px;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.atc-active .atc-shimmer {
+  opacity: 0.55;
+}
+.atc-hovered .atc-shimmer {
+  opacity: 0.75;
+}
+
+.atc-rarity-gold .atc-shimmer,
+.atc-rarity-revealed .atc-shimmer {
+  background: linear-gradient(
+    125deg,
+    transparent 30%,
+    rgba(242, 197, 107, 0.08) 35%,
+    rgba(255, 246, 228, 0.18) 38%,
+    rgba(242, 197, 107, 0.28) 40%,
+    rgba(255, 246, 228, 0.18) 42%,
+    rgba(242, 197, 107, 0.08) 45%,
+    transparent 50%
+  );
+  background-size: 250% 250%;
+  animation: atcShimmerSweep 3.5s linear infinite;
+}
+.atc-rarity-normal .atc-shimmer {
+  background: linear-gradient(
+    135deg,
+    transparent 40%,
+    rgba(255, 246, 228, 0.06) 47%,
+    rgba(229, 183, 104, 0.1) 50%,
+    rgba(255, 246, 228, 0.06) 53%,
+    transparent 60%
+  );
+  background-size: 200% 200%;
+  animation: atcShimmerSweep 5s linear infinite;
+}
+.atc-rarity-locked .atc-shimmer {
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(156, 90, 123, 0.06) 40%,
+    rgba(200, 160, 200, 0.12) 43%,
+    rgba(156, 90, 123, 0.08) 46%,
+    transparent 55%
+  );
+  background-size: 220% 220%;
+  animation: atcShimmerSweep 4.5s linear infinite;
+}
+
+@keyframes atcShimmerSweep {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: -100% 100%;
+  }
+}
+
+.atc-intensity-soft .atc-shimmer {
+  opacity: 0.3 !important;
+}
+.atc-intensity-strong .atc-shimmer {
+  opacity: 0.9 !important;
+  animation-duration: 2.5s !important;
+}
+
+/* ── Radial glare（鼠标追踪高光） ── */
+.atc-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* ── 星尘粒子 ── */
+.atc-sparkle {
+  position: absolute;
+  z-index: 4;
+  border-radius: 50%;
+  pointer-events: none;
+  background: #f1d38a;
+  box-shadow: 0 0 3px #d8aa5d;
+  opacity: 0;
+  animation: atcSparkleFloat 3s ease-in-out infinite;
+}
+.atc-hovered .atc-sparkle {
+  opacity: 0.7;
+}
+.atc-rarity-locked .atc-sparkle {
+  background: #c8a0c8;
+  box-shadow: 0 0 3px #9a5a7b;
+}
+
+@keyframes atcSparkleFloat {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-6px) scale(1.3);
+    opacity: 0.5;
+  }
+  80% {
+    opacity: 0.2;
+  }
+}
+
+/* ── reduced motion 覆写 ── */
+.atc-reduced .atc-shimmer {
+  animation: none !important;
+  opacity: 0.15 !important;
+}
+.atc-reduced .atc-sparkle {
+  display: none !important;
+}
+.atc-reduced .atc-glow {
+  opacity: 0.5 !important;
+  animation: none !important;
+}
+.atc-reduced .atc-glare {
+  display: none !important;
+}
+.atc-reduced .atc-inner {
+  transform: none !important;
 }
 
 /* ═══ reduced motion ═══ */
@@ -4237,56 +4566,57 @@ input:focus-visible {
 }
 
 .daily-card {
-  max-width: 460px;
+  max-width: 520px;
   margin: 0 auto;
   border-radius: 8px;
   text-align: center;
   transition:
     transform 280ms ease,
-    box-shadow 280ms ease,
-    filter 280ms ease;
+    box-shadow 280ms ease;
 }
 
 .daily-card:hover {
   transform: translateY(-3px);
-  filter: drop-shadow(0 6px 18px rgba(229, 183, 104, 0.18));
 }
 
 .daily-card-inner {
-  border: 1px solid rgba(229, 183, 104, 0.34);
+  border: 1px solid rgba(229, 183, 104, 0.18);
   border-radius: 8px;
-  padding: 24px;
-  background: linear-gradient(175deg, #fff6e4 0%, #f4dfb8 38%, #ead0a0 100%);
-  color: var(--text);
-  box-shadow:
-    0 0 0 1px rgba(229, 183, 104, 0.18) inset,
-    0 18px 48px rgba(0, 0, 0, 0.28);
+  padding: 28px 24px;
+  background: rgba(20, 16, 28, 0.7);
+  backdrop-filter: blur(8px);
+  color: var(--text-on-dark);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
   position: relative;
   overflow: hidden;
 }
 
-/* 羊皮纸纹理 */
 .daily-card-inner::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(180, 160, 130, 0.06) 2px,
-    rgba(180, 160, 130, 0.06) 3px
-  );
-  opacity: 0.5;
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(229, 183, 104, 0.06),
+      transparent 60%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(229, 183, 104, 0.03) 2px,
+      rgba(229, 183, 104, 0.03) 3px
+    );
+  opacity: 0.6;
 }
 
-/* 内边框 */
 .daily-card-inner::after {
   content: "";
   position: absolute;
   inset: 6px;
-  border: 1px solid rgba(229, 183, 104, 0.22);
+  border: 1px solid rgba(229, 183, 104, 0.12);
   border-radius: 5px;
   pointer-events: none;
 }
@@ -4297,29 +4627,31 @@ input:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .daily-empty-visual {
-  width: 72px;
-  height: 96px;
+  width: 64px;
+  height: 88px;
   display: grid;
   place-items: center;
-  border: 2px solid rgba(229, 183, 104, 0.32);
+  border: 2px solid rgba(229, 183, 104, 0.28);
   border-radius: 6px;
-  background: rgba(229, 183, 104, 0.08);
+  background: rgba(229, 183, 104, 0.06);
 }
 
 .daily-empty-icon {
-  font-size: 32px;
-  opacity: 0.7;
+  font-size: 28px;
+  color: var(--gold);
+  opacity: 0.6;
 }
 
 .daily-empty p,
 .daily-loading p,
 .daily-error p {
-  color: var(--muted-dark);
+  color: var(--text-on-dark-muted);
   font-size: 15px;
+  margin: 0;
 }
 
 .daily-shimmer {
@@ -4356,7 +4688,7 @@ input:focus-visible {
 
 .daily-card-layout {
   display: flex;
-  gap: 28px;
+  gap: 24px;
   align-items: flex-start;
   width: 100%;
 }
@@ -4375,9 +4707,7 @@ input:focus-visible {
   background: var(--bg-deep);
   border: 2px solid rgba(229, 183, 104, 0.4);
   box-shadow: 0 24px 54px rgba(0, 0, 0, 0.34);
-  animation: dailyCardReveal 600ms ease both;
-  /* 桌面端：图片宽度控制在 240px（lg），不超过 300px */
-  max-width: 240px;
+  max-width: 180px;
 }
 .daily-card-frame .tarot-card-image {
   width: 100%;
@@ -4474,31 +4804,32 @@ input:focus-visible {
 }
 
 .daily-info-block {
-  border: 1px solid rgba(229, 183, 104, 0.18);
+  border: 1px solid rgba(229, 183, 104, 0.12);
   border-radius: 6px;
-  padding: 12px 14px;
-  background: rgba(255, 246, 228, 0.4);
+  padding: 10px 14px;
+  background: rgba(229, 183, 104, 0.04);
 }
 
 .daily-info-label {
   display: block;
   font-size: 12px;
-  font-weight: 800;
-  color: var(--plum);
-  margin-bottom: 6px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 4px;
+  letter-spacing: 0.03em;
 }
 
 .daily-card-message {
   margin: 0;
   font-size: 13px;
-  color: var(--text);
+  color: var(--text-on-dark);
   line-height: 1.65;
 }
 
 .daily-card-action-text {
   margin: 0;
   font-size: 13px;
-  color: var(--text);
+  color: var(--text-on-dark);
   line-height: 1.65;
 }
 
@@ -4515,7 +4846,7 @@ input:focus-visible {
 
 .daily-card-date {
   font-size: 12px;
-  color: var(--muted-dark);
+  color: var(--text-on-dark-muted);
 }
 
 .daily-card-btns {
@@ -4736,7 +5067,7 @@ input:focus-visible {
 
 .share-cta-title {
   font-size: 12px;
-  color: #BFB6CC;
+  color: #bfb6cc;
   margin-bottom: 10px;
   text-align: center;
 }
@@ -4753,7 +5084,7 @@ input:focus-visible {
   border-radius: 8px;
   background: rgba(255, 246, 228, 0.06);
   border: 1px solid rgba(242, 197, 107, 0.18);
-  color: #FFF7E6;
+  color: #fff7e6;
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
@@ -4766,7 +5097,7 @@ input:focus-visible {
 .share-cta-btn:hover {
   background: rgba(255, 246, 228, 0.12);
   border-color: rgba(242, 197, 107, 0.35);
-  color: #F2C56B;
+  color: #f2c56b;
 }
 
 /* ── mobile: retention ── */

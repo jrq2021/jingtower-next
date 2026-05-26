@@ -16,6 +16,7 @@ export interface FreeReadingAIOutput {
   freeResult?: {
     summary: string;
     currentState?: string;
+    cardSynthesis?: string;
     coreReminder?: string;
     action: string;
     risk?: string;

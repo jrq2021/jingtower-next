@@ -22,7 +22,7 @@ export function EntryUniverse() {
                   : `/?scene=${scene.key}#room`;
           return (
             <Link className="entry-card" href={href} key={scene.key}>
-              <strong>{scene.label}</strong>
+              <strong>{scene.labelSeo ?? scene.label}</strong>
               <span>{scene.title}</span>
             </Link>
           );

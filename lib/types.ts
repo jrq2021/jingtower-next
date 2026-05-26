@@ -38,7 +38,9 @@ export type MajorCard = {
 export type Scene = {
   key: SceneKey;
   label: string;
+  labelSeo?: string;
   title: string;
+  subtitle?: string;
   description: string;
   rewrite: string;
   freeTitle: string;
@@ -71,8 +73,11 @@ export type Reading = {
   cards: TarotCard[];
   freeResult: {
     summary: string;
+    currentState?: string;
+    cardSynthesis?: string;
     insight: string;
     action: string;
+    risk?: string;
     paywallTeaser: string;
   };
   deepResult?: DeepResult;

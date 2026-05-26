@@ -137,10 +137,10 @@ function checkUnlocked(): boolean {
 /* ─── scene label mapping ─── */
 
 const sceneLabelMap: Record<string, string> = {
-  love: "爱情",
-  yesno: "是否",
-  choice: "二选一",
-  career: "职业",
+  love: "感情关系",
+  yesno: "是/否判断",
+  choice: "选择对比",
+  career: "职业决策",
 };
 
 /* ─── component ─── */
@@ -362,7 +362,10 @@ export function UserRetention() {
                       >
                         明天再抽
                       </button>
-                      <Link className="button primary daily-btn-sm" href="/cards">
+                      <Link
+                        className="button primary daily-btn-sm"
+                        href="/cards"
+                      >
                         查看牌义
                       </Link>
                     </div>
